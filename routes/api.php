@@ -28,4 +28,17 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
 });
 //End Admin Section
 
+//Start User Section
+Route::group(['namespace' => 'Api\Web'], function () {
+
+    //get categories list
+    Route::get('categories', 'CategoriesController@index');
+    //get categories list
+    Route::get('products/category/{category}', 'ProductsController@index');
+    //get Search
+    Route::get('search', 'SearchController@search');
+});
+
+//End User Section
+
 
