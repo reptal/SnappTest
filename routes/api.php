@@ -20,9 +20,11 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
     Route::post('auth', 'AuthController@login');
 
     //auth protected routes
-    Route::middleware('auth:api')->get('/user', function (Request $request) {
-        return $request->user();
+    Route::group(['middleware' => 'auth:api'], function () {
+        //create new product
+        Route::post('products', 'ProductsController@store');
     });
+
 });
 //End Admin Section
 

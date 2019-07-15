@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Exceptions\CustomValidationException;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateProductsWithExcelRequest extends FormRequest
@@ -25,7 +27,13 @@ class CreateProductsWithExcelRequest extends FormRequest
     {
         return [
             //
-            'file' => 'required|mimes:xls,xlsx'
+            'excel' => 'required|mimes:xls,xlsx'
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+
+        throw (new CustomValidationException($validator));
     }
 }

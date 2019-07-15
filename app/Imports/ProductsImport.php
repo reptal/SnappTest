@@ -2,31 +2,61 @@
 
 namespace App\Imports;
 
+use App\Exceptions\CustomValidationException;
 use App\Models\Category;
 use App\Models\Product;
+use App\Repositories\CategoryRepository;
+use App\Repositories\ProductRepository;
+use App\Serializers\Excel\CreateProductSerializer;
+use App\Services\Validation\ProductExcelValidator;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\ToCollection;
 
-class ProductsImport implements ToModel
+class ProductsImport implements ToCollection
 {
+    protected $categoryRepository;
+    protected $productSerializer;
+    protected $productRepository;
+    protected $productExcelValidator;
+
     /**
-     * @param array $row
-     * @return Product
+     * ProductsImport constructor.
      */
-    public function model(array $row): Product
+    public function __construct()
     {
-        return new Product([
-            'name' => $row[1],
-            'price' => $row[2],
-            'description' => $row[3],
-            'stock_count' => $row[4],
-            'image_url' => $row[5],
-            'category_id' => function () use ($row) {
-                return Category::firstOrCreate([
-                    'name' => $row[0]
-                ])->id;
-            }
-        ]);
+        $this->categoryRepository = new CategoryRepository();
+        $this->productSerializer = new CreateProductSerializer();
+        $this->productRepository = new ProductRepository();
+        $this->productExcelValidator = new ProductExcelValidator();
+    }
+
+    /**
+     * @param Collection $rows
+     * @throws CustomValidationException
+     * @return void
+     */
+    public function collection(Collection $rows): void
+    {
+        $this->productExcelValidator->validate($rows->toArray());
+        $products = [];
+        //for each row
+        foreach ($rows as $row) {
+            //create the category
+            $category = $this->categoryRepository->create([
+                'name' => $row[0]
+            ]);
+            //change row cat name with cat id
+            $row[0] = $category->id;
+            //create array of products to Insert
+            $products[] = $this->productSerializer->serialize($row->toArray());
+        }
+        //if we have any product ready to insert
+        if (count($products) > 0) {
+            //bulk insert products
+            $this->productRepository->bulkCreate($products);
+        }
+
     }
 
     /**
@@ -35,7 +65,7 @@ class ProductsImport implements ToModel
     public function rules(): array
     {
         return [
-            '1' => Rule::unique('products', 'name'),
+            1 => Rule::unique('products', 'name'),
         ];
     }
 
