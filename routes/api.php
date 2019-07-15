@@ -13,6 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+//Start Admin Section
+Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
+
+    //login user
+    Route::post('auth', 'AuthController@login');
+
+    //auth protected routes
+    Route::middleware('auth:api')->get('/user', function (Request $request) {
+        return $request->user();
+    });
 });
+//End Admin Section
+
+

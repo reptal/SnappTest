@@ -20,6 +20,13 @@ class CreateProductsTable extends Migration
             $table->text('description');
             $table->integer('stock_count');
             $table->string('image_url');
+            //category reference
+            $table->unsignedBigInteger('category_id')
+                ->index();
+            $table->foreign('category_id')
+                ->references('id')
+                ->on('categories');
+            //end category reference
             $table->timestamps();
         });
     }
