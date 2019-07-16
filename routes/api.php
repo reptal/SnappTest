@@ -23,6 +23,8 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
     Route::group(['middleware' => 'auth:api'], function () {
         //create new product
         Route::post('products', 'ProductsController@store');
+        Route::post('products/sync/elastic', 'ProductsController@syncElastic');
+
     });
 
 });
