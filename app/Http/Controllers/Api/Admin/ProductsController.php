@@ -6,6 +6,7 @@ use App\Http\Requests\Admin\CreateProductsWithExcelRequest;
 use App\Imports\ProductsImport;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Product;
 use App\Serializers\Response\JsonResponseSerializer;
 
 class ProductsController extends Controller
@@ -37,8 +38,13 @@ class ProductsController extends Controller
      */
     public function syncElastic()
     {
+        //categories list
         $categories = Category::all();
         $categories->searchable();
+
+        //products list
+        $products = Product::all();
+        $products->searchable();
         //send response
         return response()->json($this->jsonResponseSerializer->serialize([
             'error' => false,

@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use App\Elastic\ProductElastic;
 use Illuminate\Database\Eloquent\Model;
+use ScoutElastic\Searchable;
 
 class Product extends Model
 {
+    use Searchable, ProductElastic;
+
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];
