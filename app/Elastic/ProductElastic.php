@@ -15,8 +15,22 @@ trait  ProductElastic
         'properties' => [
             'name' => [
                 'type' => 'text',
-
             ],
+            'price' => [
+                'type' => 'integer'
+            ],
+            'description' => [
+                'type' => 'text'
+            ],
+            'stock_count' => [
+                'type' => 'integer'
+            ],
+            'image_url' => [
+                'type' => 'text'
+            ],
+            'category' => [
+                'type' => 'object'
+            ]
         ]
     ];
 }
