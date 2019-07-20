@@ -22,16 +22,5 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    /**
-     * @return array
-     */
-    public function toSearchableArray(): array
-    {
-        $array = $this->toArray();
-
-        $array['category'] = $this->category;
-
-        return $array;
-    }
     //
 }

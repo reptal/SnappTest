@@ -28,8 +28,8 @@ trait  ProductElastic
             'image_url' => [
                 'type' => 'text'
             ],
-            'category' => [
-                'type' => 'object'
+            'category_id' => [
+                'type' => 'integer'
             ]
         ]
     ];
