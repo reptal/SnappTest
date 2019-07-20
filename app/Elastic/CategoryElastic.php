@@ -15,7 +15,11 @@ trait CategoryElastic
         'properties' => [
             'name' => [
                 'type' => 'text',
-
+                "fields" => [
+                    "raw" => [
+                        "type" => "keyword"
+                    ]
+                ]
             ],
         ]
     ];

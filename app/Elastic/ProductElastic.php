@@ -15,6 +15,11 @@ trait  ProductElastic
         'properties' => [
             'name' => [
                 'type' => 'text',
+                "fields" => [
+                    "raw" => [
+                        "type" => "keyword"
+                    ]
+                ]
             ],
             'price' => [
                 'type' => 'integer'

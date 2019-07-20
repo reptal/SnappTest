@@ -33,10 +33,20 @@ class ProductRepository implements ModelRepository
      * @param int $id
      * @return Collection
      */
-    public function allFromElasticByCategoryId(int $id):Collection
+    public function allFromElasticByCategoryId(int $id): Collection
     {
         return Product::search('*')
             ->where('category_id', $id)
+            ->get();
+    }
+
+    /**
+     * @param string $search
+     * @return Collection
+     */
+    public function searchInElastic(string $search)
+    {
+        return Product::search('*' . $search . '*')
             ->get();
     }
 }

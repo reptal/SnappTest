@@ -29,4 +29,14 @@ class CategoryRepository implements ModelRepository
         return Category::search('*')
             ->get();
     }
+
+    /**
+     * @param string $search
+     * @return Collection
+     */
+    public function searchInElastic(string $search)
+    {
+        return Category::search('*' . $search . '*')
+            ->get();
+    }
 }
